@@ -1,7 +1,4 @@
 
-getwd()
-
-
 #Data downloaded from  
 #https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip
 getwd()
@@ -26,7 +23,7 @@ with(d_c, {
 })
 title(main="Global Active Power over Time")
 
-##Plot3 
+##Plot 3 
 with(d_c, {
   plot(Sub_metering_1~Datetime, type="l",
        ylab="Global Active Power (kilowatts)", xlab="")
@@ -39,7 +36,7 @@ legend("topright", col=c("black", "green", "blue"), lty=1, lwd=2,
 # annotating graph
 title(main="Energy sub-metering")
 
-##Plot4
+##Plot 4
 par(mfrow=c(2,2), mar=c(4,4,2,1), oma=c(0,0,2,0))
 with(d_c, {
   plot(Global_active_power~Datetime, type="l", 
@@ -50,7 +47,7 @@ with(d_c, {
        ylab="Global Active Power (kilowatts)", xlab="")
   lines(Sub_metering_2~Datetime,col='Green')
   lines(Sub_metering_3~Datetime,col='Blue')
-  legend("topright", col=c("black", "red", "blue"), lty=1, lwd=2, bty="n",
+  legend("topright", col=c("black", "green", "blue"), lty=1, lwd=2, bty="n",
          legend=c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"))
   plot(Global_reactive_power~Datetime, type="l", 
        ylab="Global Rective Power (kilowatts)",xlab="datetime")
