@@ -1,0 +1,86 @@
+---
+title: "eda_project1"
+author: "Joanna Tyszkiewicz Georgescu"
+date: "February 23, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Objective
+The objective of this project is to reproduce plots that help examine variation in energy usage over two days in February, 2007. 
+
+Data downloaded from: 
+https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip
+
+
+```{r, echo=FALSE,results='hide',message=FALSE, warning=FALSE}
+getwd()
+setwd("C:\\Users\\Joanna\\Desktop\\R_coursera\\EDA\\")
+```
+
+Reading, subsetting power consumption data, transforming the Date and Time variables from characters into objects of type Date and POSIXlt respectively to generate plot 1: Global Active Power
+
+```{r}
+d <- read.csv("household_power_consumption.txt", header=T, sep=';', na.strings="?", 
+                      nrows=2075259, check.names=F, stringsAsFactors=F, comment.char="", quote='\"')
+d_c <- subset(d, Date %in% c("1/2/2007","2/2/2007"))
+d_c$Date <- as.Date(d_c$Date, format="%d/%m/%Y")
+# invoke plot funcion
+hist(d_c$Global_active_power, main="Global Active Power", 
+     xlab="Global Active Power (kilowatts)", ylab="Frequency", col="Blue")
+```
+
+Plot 2 Global Active Power consumption over time
+
+```{r}
+dateTime <- paste(as.Date(d_c$Date), d_c$Time)
+d_c$Datetime <- as.POSIXct(dateTime)
+
+with(d_c, {
+  plot(Global_active_power~Datetime, type="l",
+       ylab="Global Active Power (kilowatts)", xlab="")
+})
+title(main="Global Active Power over Time")
+```
+
+Plot 3  Energy sub-metering over time
+
+```{r}
+with(d_c, {
+  plot(Sub_metering_1~Datetime, type="l",
+       ylab="Global Active Power (kilowatts)", xlab="")
+  lines(Sub_metering_2~Datetime,col='Green')
+  lines(Sub_metering_3~Datetime,col='Blue')
+})
+legend("topright", col=c("black", "green", "blue"), lty=1, lwd=2, 
+       legend=c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"))
+
+#annotate graph
+title(main="Energy sub-metering")
+```
+
+
+Plot 4 multi-plot graph 
+
+```{r}
+par(mfrow=c(2,2), mar=c(4,4,2,1), oma=c(0,0,2,0))
+
+with(d_c, {
+  plot(Global_active_power~Datetime, type="l", 
+       ylab="Global Active Power (kilowatts)", xlab="")
+  plot(Voltage~Datetime, type="l", 
+       ylab="Voltage (volt)", xlab="datetime")
+  plot(Sub_metering_1~Datetime, type="l", 
+       ylab="Global Active Power (kilowatts)", xlab="")
+  lines(Sub_metering_2~Datetime,col='Green')
+  lines(Sub_metering_3~Datetime,col='Blue')
+  legend("topright", col=c("black", "green", "blue"), lty=1, lwd=2, bty="n",
+         legend=c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"))
+  plot(Global_reactive_power~Datetime, type="l", 
+       ylab="Global Rective Power (kilowatts)",xlab="datetime")
+})
+```
+
